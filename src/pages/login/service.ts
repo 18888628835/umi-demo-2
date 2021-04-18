@@ -7,3 +7,13 @@ export async function getRemote(params) {
     });
   return data;
 }
+
+export async function EditName(id, data) {
+  await axios({
+    url: `http://public-api-v1.aspirantzhang.com/users/${id}`,
+    method: 'PUT',
+    data: data,
+  }).then(null, (error) => {
+    throw new Error(error);
+  });
+}
