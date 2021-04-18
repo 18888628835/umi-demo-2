@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { connect } from 'umi';
 import { Table, Button } from 'antd';
 import UseModal from './components/UseModal';
+import { useDispatch, useSelector, Dispatch } from 'dva';
 
-const Login = (props) => {
+const Login = () => {
+  //不用 connect 的写法
+  const dispatch = useDispatch<Dispatch>();
+  const { login, loading } = useSelector((state: any) => {
+    return state;
+  });
   //modal 框弹出隐藏
   const [visible, setVisible] = useState(false);
   //一排的数据
@@ -26,7 +31,7 @@ const Login = (props) => {
     //异步只是为了让 ok 键旋转效果明显一点
     setTimeout(() => {
       //这里才是页面 dispatch 的逻辑
-      props.dispatch({
+      dispatch({
         type: 'login/asyncEditName',
         payload: { id: id, ...values },
       });
@@ -79,9 +84,9 @@ const Login = (props) => {
       <Button onClick={onAdd}>ADD</Button>
       <Table
         columns={columns}
-        dataSource={props.login.listData}
+        dataSource={login.listData}
         rowKey="id"
-        loading={props.userLoading}
+        loading={loading.models.login}
       />
       <UseModal
         showModal={showModal}
@@ -95,6 +100,7 @@ const Login = (props) => {
 };
 const mapStateToProps = (state) => {
   const { login, loading } = state;
+  //loading 可以获取异步的 loading 状态
   return { login, userLoading: loading.models.login };
 };
-export default connect(mapStateToProps)(Login);
+export default Login;

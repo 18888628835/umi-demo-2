@@ -1,6 +1,16 @@
 import { EditName, getRemote } from './service';
+import { Effect, Reducer, Subscription } from 'umi';
+interface modelType {
+  namespace: 'login';
+  state: any;
+  reducers: {
+    getList: Reducer<any>;
+  };
+  effects: { asyncGetData: Effect; asyncEditName: Effect };
+  subscriptions: { setup: Subscription };
+}
 
-const model = {
+const model: modelType = {
   namespace: 'login',
   state: {},
   reducers: {
