@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import UseModal from './components/UseModal';
 
 const Login = (props) => {
@@ -10,10 +10,11 @@ const Login = (props) => {
   const [record, setRecord] = useState<any>({});
   //控制 modal 框的 ok 键是否有异步效果
   const [confirmLoading, setConfirmLoading] = useState(false);
-
+  //modal 框弹出隐藏
   const showModal = () => {
     setVisible(!visible);
   };
+  //设置Record 值用来注入 form 表单中
   const handlerRecord = (value) => {
     setRecord(value);
   };
@@ -68,10 +69,20 @@ const Login = (props) => {
       dataIndex: 'update_time',
     },
   ];
+  const onAdd = () => {
+    showModal();
+    handlerRecord('');
+  };
   return (
     <>
       {/* rowKey 用来消除页面报错问题 */}
-      <Table columns={columns} dataSource={props.login.listData} rowKey="id" />
+      <Button onClick={onAdd}>ADD</Button>
+      <Table
+        columns={columns}
+        dataSource={props.login.listData}
+        rowKey="id"
+        loading={props.userLoading}
+      />
       <UseModal
         showModal={showModal}
         visible={visible}
@@ -83,7 +94,7 @@ const Login = (props) => {
   );
 };
 const mapStateToProps = (state) => {
-  const { login } = state;
-  return { login };
+  const { login, loading } = state;
+  return { login, userLoading: loading.models.login };
 };
 export default connect(mapStateToProps)(Login);
