@@ -60,7 +60,7 @@ const UseModal: FC<UseModalProps> = (props) => {
           <Form.Item
             label="email"
             name="email"
-            rules={[{ required: true, message: 'Please input your name!' }]}
+            rules={[{ message: 'Please input your name!' }]}
           >
             <Input readOnly />
           </Form.Item>
